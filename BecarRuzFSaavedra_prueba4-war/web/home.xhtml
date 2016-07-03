@@ -40,7 +40,7 @@
                 <br/>
                 <br/>
                 <br/>
-                
+
                 <p:selectOneRadio value="#{recepcionBean.medioPago}">
                     <f:selectItem itemLabel="Efectivo" itemValue="true"/>
                     <f:selectItem itemLabel="Tarjeta debito/credito" itemValue="false"/>
@@ -79,12 +79,12 @@
             <h:form id="form3">
                 <p:dataTable id="tablaProductos" var="sel" value="#{recepcionBean.seleccionados}" >
 
-                    <p:column headerText="Producto">
-                        <h:outputText value="#{sel.descripcion}" />
-                    </p:column>
-                    <p:column headerText="Cantidad">
-                        <h:outputText value="#{recepcionBean.cantidades.get(sel)}" />
-                    </p:column>
+                    <p:column headerText="Producto" sortBy="#{sel.descripcion}" >
+						<h:outputText value="#{sel.descripcion}" />
+					</p:column>
+					<p:column headerText="Cantidad" sortBy="#{recepcionBean.cantidades.get(sel)}">
+						<h:outputText value="#{recepcionBean.cantidades.get(sel)}" />
+					</p:column>
 
                     <p:column style="width:2em;text-align: center">
                         <p:commandButton icon="ui-icon-search" title="View" update="tablaProductos :formtotal"
