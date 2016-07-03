@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -44,7 +45,7 @@ public class RecepcionBean implements Serializable {
 	private ProductoFacadeLocal productoFacade;
 
 	private String nombre;
-	private String rut;
+	private int rut;
 	private Boolean agrandar;
 	private Boolean llevar;
 	private int productoSelecciondo;
@@ -71,11 +72,31 @@ public class RecepcionBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		Map<String, String> mapa = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		seleccionados = new ArrayList<>();
 		cantidades = new HashMap<>();
-		medioPago = true;
-		agrandar = false;
-		llevar = false;
+		if (mapa.containsKey("reusar")) {
+			int pedidoReUsar = Integer.valueOf(mapa.get("reusar"));
+			Pedido p = pedidoFacade.find(pedidoReUsar);
+			rut = p.getRut().getRut();
+			nombre = p.getRut().getNombre();
+			medioPago = "Efectivo".equals(p.getMedioPago());
+			agrandar = p.getAgrandaBebidaPapas();
+			llevar = p.getParaLlevar();
+			//Llena los seleccionados
+			List<PedidoDetalle> detalles = pedidoDetalleFacade.findByTicket(p);
+			for (PedidoDetalle pd : detalles) {
+				Producto producto = pd.getIdProducto();
+				seleccionados.add(producto);
+				cantidades.put(producto, pd.getCantidad());
+			}
+			total = p.getTotal();
+
+		} else {
+			medioPago = true;
+			agrandar = false;
+			llevar = false;
+		}
 	}
 
 	/**
@@ -163,11 +184,11 @@ public class RecepcionBean implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public String getRut() {
+	public int getRut() {
 		return rut;
 	}
 
-	public void setRut(String rut) {
+	public void setRut(int rut) {
 		this.rut = rut;
 	}
 

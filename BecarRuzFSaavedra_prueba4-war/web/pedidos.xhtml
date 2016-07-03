@@ -2,14 +2,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-	  xmlns:p="http://primefaces.org/ui">
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
+		<style>
+			.ui-widget-content {border-style: none}
+			.ui-panelgrid .ui-panelgrid-cell {border-style: none}
+		</style>
     </h:head>
     <h:body>
-        <h:form>
-            <p:panelGrid columns="3"  >   
-                <img src="imagenes/logo.png" height="50" width="75" />
+		<p:panelGrid columns="3"  >   
+			<img src="imagenes/logo.png" height="50" width="75" />
+			<h:form id="form1">
                 <h:panelGrid columns="3">
 
                     <h:outputText value="Busca tus ultimos pedidos y vuelve a solicitarlos de inmediato" /> 
@@ -17,30 +22,35 @@
                     <h:outputText/>
                     <p:inputText id='rut' value="#{busquedaBean.rut}"  required="true"/>
                     <p:watermark for="rut" value="RUT" />
-                    <p:commandButton value="Buscar" ajax="false" action="#{busquedaBean.buscar()}"/>
+                    <p:commandButton value="Buscar" actionListener="#{busquedaBean.buscar()}" update=":tabla:dta"/>
                 </h:panelGrid>
-                <p:link outcome="ayuda" value="Ayuda"  />
-                <h:panelGrid columns="1">
-                    <p:link outcome="home" value="Home"/>
-                    <p:link outcome="pedidos" value="Mis Pedidos"/>
-                </h:panelGrid>
-                <p:dataTable style="width: 500px" id="dt" var="p" value="#{busquedaBean.pedidos}">
-                    <p:column  style="width: 200px;text-align: center" headerText="Producto">
-                        <h:outputText value="#{p.descripcion}" />
-                    </p:column>
-                    <p:column style="width: 100px;text-align: center"  headerText="Cantidad">
-                        <h:outputText value="#{p.valor}" />
-                    </p:column>
+			</h:form>
+			<p:link outcome="ayuda" value="Ayuda"  />
+			<h:panelGrid columns="1">
+				<p:link outcome="home" value="Home"/>
+				<p:link outcome="pedidos" value="Mis Pedidos"/>
+			</h:panelGrid>
+			<h:form id="tabla">
+				<p:dataTable  id="dta" var="p" value="#{busquedaBean.pedidos}">
+					
+					<p:column  style="width: 200px;text-align: center" headerText="Producto">
+						<h:outputText value="#{p.descripcion}" />
+					</p:column>
 
-                    <p:column style="width:15px;text-align: center">
-                        <p:commandButton value="daskd"  title="View">
-                        </p:commandButton>
-                    </p:column>
-                </p:dataTable> 
+					<p:column style="width: 100px;text-align: center"  headerText="Cantidad">
+						<h:outputText value="#{p.valor}" />
+					</p:column>
+
+					<p:column style="width:15px;text-align: center">
+						<p:commandButton value="Volver a pedir" action="#{busquedaBean.pedir(p.id)}" update=":tabla">
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable> 
+			</h:form>
 
 
-            </p:panelGrid>
-        </h:form>
+		</p:panelGrid>
     </h:body>
 
 </html>

@@ -6,6 +6,10 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>John Master</title>
+		<style>
+			.ui-widget-content {border-style: none}
+			.ui-panelgrid .ui-panelgrid-cell {border-style: none}
+		</style>
     </h:head>
     <h:body>
         <p:panelGrid columns="2">  
@@ -72,7 +76,7 @@
 						<h:outputText value="#{recepcionBean.cantidades.get(sel)}" />
 					</p:column>
 
-					<p:column style="width:15px;text-align: center">
+					<p:column style="width:2em;text-align: center">
 						<p:commandButton icon="ui-icon-search" title="View" update="tablaProductos :formtotal"
 										 actionListener="#{recepcionBean.eliminarProducto(sel.idProducto)}">
 						</p:commandButton>

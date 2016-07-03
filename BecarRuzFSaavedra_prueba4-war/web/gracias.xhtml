@@ -2,13 +2,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-	  xmlns:p="http://primefaces.org/ui">
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
+		<style>
+			.ui-widget-content {border-style: none}
+			.ui-panelgrid .ui-panelgrid-cell {border-style: none}
+		</style>
     </h:head>
-    <h:body>
+    <h:body >
 		<h:form>
-            <p:panelGrid columns="3"  >   
+            <p:panelGrid columns="3" id="panel" >   
                 <img src="imagenes/logo.png" height="50" width="75" />
                 <h:panelGrid columns="1">
                     <h:outputText />                    
@@ -18,19 +23,30 @@
                     <p:link outcome="home" value="Home"/>
                     <p:link outcome="pedidos" value="Mis Pedidos"/>
                 </h:panelGrid>
-                <h:panelGrid columns="1" style="text-align: center" >
-                    <h:outputText value="Muchas gracias #{graciasBean.nombre}"/>
-                    <h:outputText value="Tu numero de pedido es:  #{graciasBean.ticket}"/>
-                    <h:outputText value="Monto de su Pedido:  #{graciasBean.monto}"/>
+                <h:panelGrid columns="1" >
+					<p:panel>
+						<h:outputText value="Muchas gracias " />
+						<h:outputText value="#{graciasBean.nombre}" style="font-weight: bold"/>
+					</p:panel>
+					<p:panel>
+                    <h:outputText value="Tu numero de pedido es: "/>
+					<h:outputText value="#{graciasBean.ticket}">
+						<f:convertNumber pattern="#0000" />
+					</h:outputText>
+					</p:panel>
+					<p:panel>
+						<h:outputText value="Monto de su Pedido: $" />
+						<h:outputText value="#{graciasBean.monto}">
+							<f:convertNumber locale="es_CL" />
+						</h:outputText>
+					</p:panel>
                     <br/>
                     <br/>
                     <br/>
                     <br/>
                     <br/>
-                    <h:outputText value="Por favor pase por caja para que luego pueda esperar comodamente su pedido"/>
-
+					<h:outputText value="Por favor pase por caja para que luego pueda esperar comodamente su pedido"/>
                 </h:panelGrid>
-
             </p:panelGrid>
         </h:form>
     </h:body>

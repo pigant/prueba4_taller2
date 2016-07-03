@@ -11,15 +11,17 @@ package cl.auxiliares;
  */
 public class PedidoRealizados {
 
+	private int id;
 	private String descripcion;
 	private int valor;
 
 	public PedidoRealizados() {
 	}
 
-	public PedidoRealizados(String descripcion, int valor) {
+	public PedidoRealizados(String descripcion, int valor, int id) {
 		this.descripcion = descripcion;
 		this.valor = valor;
+		this.id = id;
 	}
 	
 
@@ -39,6 +41,12 @@ public class PedidoRealizados {
 		this.valor = valor;
 	}
 
-	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 	
 }

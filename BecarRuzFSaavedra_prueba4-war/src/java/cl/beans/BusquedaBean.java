@@ -12,22 +12,20 @@ import cl.pojos.PedidoDetalle;
 import cl.service.ClienteFacadeLocal;
 import cl.service.PedidoDetalleFacadeLocal;
 import cl.service.PedidoFacadeLocal;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
 
 /**
  *
  * @author sistemas
  */
 @Named(value = "busquedaBean")
-@RequestScoped
-public class BusquedaBean {
+@ViewScoped
+public class BusquedaBean implements Serializable{
 
 	@EJB
 	private ClienteFacadeLocal clienteFacade;
@@ -50,6 +48,11 @@ public class BusquedaBean {
 		pedidos = new ArrayList<>();
 	}
 
+	public String pedir(int id){
+		String salida = "home.xhtml?faces-redirect=true&reusar="+id;
+		return salida;
+	}
+
 	public void buscar() {
 		// buscamos pedidos
 		pedidos = new ArrayList<>();
@@ -66,7 +69,7 @@ public class BusquedaBean {
 				descripcion += pd.getIdProducto().getDescripcion() + "+";
 			}
 			descripcion = descripcion.substring(0, descripcion.length()-1);
-			PedidoRealizados pr = new PedidoRealizados(descripcion, p.getTotal());
+			PedidoRealizados pr = new PedidoRealizados(descripcion, p.getTotal(), p.getTicket());
 			pedidos.add(pr);
 		}
 		//Actualiza la tabla
