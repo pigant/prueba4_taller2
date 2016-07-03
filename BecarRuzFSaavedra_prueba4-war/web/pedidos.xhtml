@@ -38,7 +38,12 @@
 					</p:column>
 
 					<p:column style="width: 100px;text-align: center"  headerText="Cantidad">
-						<h:outputText value="#{p.valor}" />
+						<h:panelGroup>
+						$
+						<h:outputText value="#{p.valor}">
+							<f:convertNumber locale="es_CL"/>
+						</h:outputText> 
+						</h:panelGroup>
 					</p:column>
 
 					<p:column style="width:15px;text-align: center">

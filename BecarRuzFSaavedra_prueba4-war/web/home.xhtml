@@ -59,12 +59,11 @@
 						<p:ajax />
 					</p:selectBooleanCheckbox>
 				</h:panelGrid>
-				<p:panelGrid columns="2">
-					<p:selectOneRadio value="#{recepcionBean.medioPago}">
-						<f:selectItem itemLabel="Efectivo" itemValue="true"/>
-						<f:selectItem itemLabel="Tarjeta debito/credito" itemValue="false"/>
-					</p:selectOneRadio>
-				</p:panelGrid>
+				<p:selectOneRadio value="#{recepcionBean.medioPago}">
+					<f:selectItem itemLabel="Efectivo" itemValue="true"/>
+					<f:selectItem itemLabel="Tarjeta debito/credito" itemValue="false"/>
+					<p:ajax event="change" immediate="true"/>
+				</p:selectOneRadio>
 			</h:form>
 			<h:form id="form3">
 				<p:dataTable id="tablaProductos" var="sel" value="#{recepcionBean.seleccionados}" >
