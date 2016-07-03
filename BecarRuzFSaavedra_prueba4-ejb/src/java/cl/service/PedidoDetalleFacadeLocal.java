@@ -5,6 +5,7 @@
  */
 package cl.service;
 
+import cl.pojos.Pedido;
 import cl.pojos.PedidoDetalle;
 import java.util.List;
 import javax.ejb.Local;
@@ -30,6 +31,6 @@ public interface PedidoDetalleFacadeLocal {
 
     int count();
 
-	public List<PedidoDetalle> findByTicket(int ticket);
+	public List<PedidoDetalle> findByTicket(Pedido ticket);
     
 }

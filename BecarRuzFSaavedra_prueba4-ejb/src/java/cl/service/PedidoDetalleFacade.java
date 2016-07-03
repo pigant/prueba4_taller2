@@ -5,6 +5,7 @@
  */
 package cl.service;
 
+import cl.pojos.Pedido;
 import cl.pojos.PedidoDetalle;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -32,9 +33,9 @@ public class PedidoDetalleFacade extends AbstractFacade<PedidoDetalle> implement
     }
 
     @Override
-    public List<PedidoDetalle> findByTicket(int ticket){
-	    Query q = getEntityManager().createNamedQuery("PedidoDetalle.findByIdPedidoDetalle");
-	    q.setParameter("idPedidoDetalle", ticket);
+    public List<PedidoDetalle> findByTicket(Pedido ticket){
+	    Query q = getEntityManager().createNamedQuery("PedidoDetalle.findByTicket");
+	    q.setParameter("ticket", ticket);
 	    return q.getResultList();
     }
     

@@ -5,6 +5,7 @@
  */
 package cl.service;
 
+import cl.pojos.Cliente;
 import cl.pojos.Pedido;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -32,7 +33,7 @@ public class PedidoFacade extends AbstractFacade<Pedido> implements PedidoFacade
     }
 
     @Override
-    public List<Pedido> findByRut(int rut){
+    public List<Pedido> findByRut(Cliente rut){
 	    Query q = getEntityManager().createNamedQuery("Pedido.findByRut");
 	    q.setParameter("rut", rut);
 	    return q.getResultList();

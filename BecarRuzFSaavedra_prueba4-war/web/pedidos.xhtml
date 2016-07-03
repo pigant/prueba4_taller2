@@ -1,12 +1,47 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-	Hello from Facelets
+        <h:form>
+            <p:panelGrid columns="3"  >   
+                <img src="imagenes/logo.png" height="50" width="75" />
+                <h:panelGrid columns="3">
+
+                    <h:outputText value="Busca tus ultimos pedidos y vuelve a solicitarlos de inmediato" /> 
+                    <h:outputText/>
+                    <h:outputText/>
+                    <p:inputText id='rut' value="#{busquedaBean.rut}"  required="true"/>
+                    <p:watermark for="rut" value="RUT" />
+                    <p:commandButton value="Buscar" ajax="false" action="#{busquedaBean.buscar()}"/>
+                </h:panelGrid>
+                <p:link outcome="ayuda" value="Ayuda"  />
+                <h:panelGrid columns="1">
+                    <p:link outcome="home" value="Home"/>
+                    <p:link outcome="pedidos" value="Mis Pedidos"/>
+                </h:panelGrid>
+                <p:dataTable style="width: 500px" id="dt" var="p" value="#{busquedaBean.pedidos}">
+                    <p:column  style="width: 200px;text-align: center" headerText="Producto">
+                        <h:outputText value="#{p.descripcion}" />
+                    </p:column>
+                    <p:column style="width: 100px;text-align: center"  headerText="Cantidad">
+                        <h:outputText value="#{p.valor}" />
+                    </p:column>
+
+                    <p:column style="width:15px;text-align: center">
+                        <p:commandButton value="daskd"  title="View">
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable> 
+
+
+            </p:panelGrid>
+        </h:form>
     </h:body>
+
 </html>
 

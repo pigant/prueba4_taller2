@@ -29,7 +29,7 @@ import javax.inject.Named;
  */
 @Named(value = "recepcionBean")
 @ViewScoped
-public class RecepcionBean implements Serializable{
+public class RecepcionBean implements Serializable {
 
 	@EJB
 	private PedidoDetalleFacadeLocal pedidoDetalleFacade;
@@ -70,9 +70,12 @@ public class RecepcionBean implements Serializable{
 	}
 
 	@PostConstruct
-	public void init(){
+	public void init() {
 		seleccionados = new ArrayList<>();
 		cantidades = new HashMap<>();
+		medioPago = true;
+		agrandar = false;
+		llevar = false;
 	}
 
 	/**
@@ -114,26 +117,29 @@ public class RecepcionBean implements Serializable{
 
 	/**
 	 * Manejo del boton pedir
+	 *
+	 * @return
 	 */
 	public String enviarPedido() {
+		final Integer rut_i = Integer.valueOf(rut);
 		//Comprobar si existe el cliente
-		Cliente c = clienteFacade.find(rut);
-		if(c == null){
+		Cliente c = clienteFacade.find(rut_i);
+		if (c == null) {
 			//Creo el cliente
-			c = new Cliente(Integer.valueOf(rut), nombre);
+			c = new Cliente(rut_i, nombre);
 			clienteFacade.create(c);
 		}
 		// Se agrega un pedido
 		Pedido p = new Pedido();
 		p.setRut(c);
-		p.setMedioPago(medioPago ? "Efectivo": "Tarjeta debito/credito");
+		p.setMedioPago(medioPago ? "Efectivo" : "Tarjeta debito/credito");
 		p.setAgrandaBebidaPapas(agrandar);
 		p.setParaLlevar(llevar);
 		p.setTotal(total);
 		//Asumiendo lo mejor, el id se rellena al crear
 		pedidoFacade.create(p);
 		// Relleno de detalles para el pedido
-		for (Producto producto: seleccionados){
+		for (Producto producto : seleccionados) {
 			PedidoDetalle pd = new PedidoDetalle();
 			pd.setTicket(p);
 			pd.setIdProducto(producto);
@@ -141,7 +147,8 @@ public class RecepcionBean implements Serializable{
 			pedidoDetalleFacade.create(pd);
 		}
 		// Redirige a gracias
-		return "gracias";
+		String salida = "gracias.xhtml?ticket=" + p.getTicket() + "&faces-redirect=true";
+		return salida;
 	}
 
 	public List<Producto> productosDB() {
@@ -169,12 +176,17 @@ public class RecepcionBean implements Serializable{
 	}
 
 	public void setAgrandar(Boolean agrandar) {
+		agrandarPapas();
+		this.agrandar = agrandar;
+	}
+
+	public void agrandarPapas() {
+		agrandar = !agrandar;
 		if (agrandar) {
 			total += 300;
-		} else {
+		} else if (total > 300) {
 			total -= 300;
 		}
-		this.agrandar = agrandar;
 	}
 
 	public Boolean getLlevar() {
@@ -226,4 +238,3 @@ public class RecepcionBean implements Serializable{
 	}
 
 }
-

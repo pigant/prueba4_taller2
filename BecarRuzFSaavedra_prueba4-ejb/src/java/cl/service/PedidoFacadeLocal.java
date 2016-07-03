@@ -5,6 +5,7 @@
  */
 package cl.service;
 
+import cl.pojos.Cliente;
 import cl.pojos.Pedido;
 import java.util.List;
 import javax.ejb.Local;
@@ -30,6 +31,6 @@ public interface PedidoFacadeLocal {
 
     int count();
 
-	public List<Pedido> findByRut(int rut);
+	public List<Pedido> findByRut(Cliente rut);
     
 }

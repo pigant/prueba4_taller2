@@ -6,16 +6,20 @@
 package cl.beans;
 
 import cl.auxiliares.PedidoRealizados;
+import cl.pojos.Cliente;
 import cl.pojos.Pedido;
 import cl.pojos.PedidoDetalle;
-import cl.pojos.Producto;
+import cl.service.ClienteFacadeLocal;
 import cl.service.PedidoDetalleFacadeLocal;
 import cl.service.PedidoFacadeLocal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -24,6 +28,9 @@ import javax.enterprise.context.RequestScoped;
 @Named(value = "busquedaBean")
 @RequestScoped
 public class BusquedaBean {
+
+	@EJB
+	private ClienteFacadeLocal clienteFacade;
 
 	@EJB
 	private PedidoDetalleFacadeLocal pedidoDetalleFacade;
@@ -35,6 +42,7 @@ public class BusquedaBean {
 
 	List<PedidoRealizados> pedidos;
 
+
 	/**
 	 * Creates a new instance of BusquedaBean
 	 */
@@ -45,19 +53,35 @@ public class BusquedaBean {
 	public void buscar() {
 		// buscamos pedidos
 		pedidos = new ArrayList<>();
-		List<Pedido> pedidosT = pedidoFacade.findByRut(rut);
+		Cliente cliente = clienteFacade.find(rut);
+		if(cliente == null){
+			return;
+		}
+		List<Pedido> pedidosT = pedidoFacade.findByRut(cliente);
 		//Se actualiza la tabla
 		for (Pedido p : pedidosT) {
-			List<PedidoDetalle> detalles = pedidoDetalleFacade.findByTicket(p.getTicket());
+			List<PedidoDetalle> detalles = pedidoDetalleFacade.findByTicket(p);
 			String descripcion = "";
 			for(PedidoDetalle pd : detalles){
 				descripcion += pd.getIdProducto().getDescripcion() + "+";
 			}
-			descripcion.substring(0, descripcion.length()-1);
+			descripcion = descripcion.substring(0, descripcion.length()-1);
 			PedidoRealizados pr = new PedidoRealizados(descripcion, p.getTotal());
 			pedidos.add(pr);
 		}
 		//Actualiza la tabla
+	}
+
+	public int getRut() {
+		return rut;
+	}
+
+	public void setRut(int rut) {
+		this.rut = rut;
+	}
+
+	public List<PedidoRealizados> getPedidos() {
+		return pedidos;
 	}
 
 }
