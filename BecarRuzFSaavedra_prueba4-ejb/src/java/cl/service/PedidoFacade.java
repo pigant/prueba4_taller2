@@ -6,9 +6,11 @@
 package cl.service;
 
 import cl.pojos.Pedido;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +29,13 @@ public class PedidoFacade extends AbstractFacade<Pedido> implements PedidoFacade
 
     public PedidoFacade() {
         super(Pedido.class);
+    }
+
+    @Override
+    public List<Pedido> findByRut(int rut){
+	    Query q = getEntityManager().createNamedQuery("Pedido.findByRut");
+	    q.setParameter("rut", rut);
+	    return q.getResultList();
     }
     
 }

@@ -29,5 +29,7 @@ public interface PedidoFacadeLocal {
     List<Pedido> findRange(int[] range);
 
     int count();
+
+	public List<Pedido> findByRut(int rut);
     
 }

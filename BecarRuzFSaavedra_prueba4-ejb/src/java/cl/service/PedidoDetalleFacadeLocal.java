@@ -29,5 +29,7 @@ public interface PedidoDetalleFacadeLocal {
     List<PedidoDetalle> findRange(int[] range);
 
     int count();
+
+	public List<PedidoDetalle> findByTicket(int ticket);
     
 }

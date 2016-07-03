@@ -13,21 +13,23 @@ import cl.service.ClienteFacadeLocal;
 import cl.service.PedidoDetalleFacadeLocal;
 import cl.service.PedidoFacadeLocal;
 import cl.service.ProductoFacadeLocal;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 
 /**
  *
  * @author sistemas
  */
 @Named(value = "recepcionBean")
-@RequestScoped
-public class RecepcionBean {
+@ViewScoped
+public class RecepcionBean implements Serializable{
 
 	@EJB
 	private PedidoDetalleFacadeLocal pedidoDetalleFacade;
@@ -65,6 +67,10 @@ public class RecepcionBean {
 	 * Creates a new instance of RecepcionBean
 	 */
 	public RecepcionBean() {
+	}
+
+	@PostConstruct
+	public void init(){
 		seleccionados = new ArrayList<>();
 		cantidades = new HashMap<>();
 	}
@@ -90,7 +96,8 @@ public class RecepcionBean {
 	/**
 	 * Elimina un producto de la tabla visual y de la lista.
 	 */
-	public void eliminarProducto() {
+	public void eliminarProducto(int idBorrar) {
+		idABorrarDeLaTabla = idBorrar;
 		final Producto producto = productoFacade.find(idABorrarDeLaTabla);
 		//actualizo mi lista
 		Integer cantidad = cantidades.get(producto) - 1;
@@ -214,8 +221,9 @@ public class RecepcionBean {
 		return seleccionados;
 	}
 
-	public void setSeleccionados(List<Producto> seleccionados) {
-		this.seleccionados = seleccionados;
+	public Map<Producto, Integer> getCantidades() {
+		return cantidades;
 	}
 
 }
+

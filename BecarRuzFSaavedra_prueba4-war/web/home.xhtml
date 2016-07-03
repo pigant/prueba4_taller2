@@ -1,12 +1,70 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>John Master</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+	<p:panelGrid columns="3"  >   
+	    <h:form id="formulario">
+                <img src="imagenes/logo.png" height="50" width="75" />
+                <h:panelGrid columns="1">
+                    <h:outputText value="Bienvenido a John Master aqui Ud. eligira los mejores productos"/>                     
+                </h:panelGrid>
+                <p:link outcome="ayuda" value="Ayuda"  />
+                <h:panelGrid columns="1">
+		    <p:link outcome="home" value="Home"/>
+		    <p:link outcome="pedidos" value="Mis Pedidos"/>
+                </h:panelGrid>
+		<h:panelGrid columns="1">
+		    <h:outputText value="Indiquenos su nombre y su rut para identificarlo en el pedido"/>
+		    <p:inputText id='nombre' value="#{recepcionBean.nombre}"  required="true"/>
+		    <p:watermark for="nombre" value="NOMBRE" />
+		    <p:inputText id='rut' value="#{recepcionBean.rut}"  required="true"/>
+		    <p:watermark for="rut" value="RUT" />
+                </h:panelGrid>
+                <h:outputText />
+                <h:outputText />
+		<h:panelGrid columns="2">
+		    <h:outputText value="Selecione un producto o combo y agregue al pedido"/>
+		    <br/>
+		    <p:selectOneMenu id="selectMenu" required="true" 
+				     value="#{recepcionBean.productoSelecciondo}" >
+
+			<f:selectItems value="#{recepcionBean.productosDB()}" var="p"
+				       itemLabel="#{p.descripcion}"
+				       itemValue="#{p.idProducto}"/>
+		    </p:selectOneMenu>
+		    <p:commandButton value="Grabar" update=":form3:tablaProductos" actionListener="#{recepcionBean.agregarProducto()}"/>
+		</h:panelGrid>
+	    </h:form>
+	    <h:form id="form2">
+		<h:outputText />
+		<h:panelGrid columns="1">
+		    <p:selectBooleanCheckbox value="#{recepcionBean.agrandar}" itemLabel="Agrandar bebidas y papas"/>
+		    <p:selectBooleanCheckbox value="#{recepcionBean.llevar}" itemLabel="Pedido para llevar"/>
+		</h:panelGrid>
+	    </h:form>
+	    <h:form id="form3">
+		<p:dataTable id="tablaProductos" var="sel" value="#{recepcionBean.seleccionados}" >
+
+		    <p:column headerText="Producto">
+			<h:outputText value="#{sel.descripcion}" />
+		    </p:column>
+		    <p:column headerText="Cantidad">
+			<h:outputText value="#{recepcionBean.cantidades.get(sel)}" />
+		    </p:column>
+
+		    <p:column style="width:15px;text-align: center">
+			<p:commandButton icon="ui-icon-search" title="View" update="tablaProductos"
+					 actionListener="#{recepcionBean.eliminarProducto(sel.idProducto)}">
+			</p:commandButton>
+		    </p:column>
+		</p:dataTable> 
+	    </h:form>
+	</p:panelGrid>
     </h:body>
 </html>
-
