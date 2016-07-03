@@ -33,11 +33,13 @@
 			<h:form id="tabla">
 				<p:dataTable  id="dta" var="p" value="#{busquedaBean.pedidos}">
 					
-					<p:column  style="width: 200px;text-align: center" headerText="Producto">
+					<p:column  style="width: 200px;text-align: center" headerText="Producto"
+							   sortBy="#{p.descripcion}">
 						<h:outputText value="#{p.descripcion}" />
 					</p:column>
 
-					<p:column style="width: 100px;text-align: center"  headerText="Cantidad">
+					<p:column style="width: 100px;text-align: center"  headerText="Cantidad"
+							  sortBy="#{p.valor}">
 						<h:panelGroup>
 						$
 						<h:outputText value="#{p.valor}">
